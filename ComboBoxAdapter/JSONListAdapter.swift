@@ -1,6 +1,5 @@
 //
 //  MyComboAdapter.swift
-//  Baylik
 //
 //  Created by Alisher on 23.02.2023.
 //
