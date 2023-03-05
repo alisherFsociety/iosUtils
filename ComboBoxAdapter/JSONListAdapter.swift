@@ -1,6 +1,4 @@
-//
-//  MyComboAdapter.swift
-//
+
 //  Created by Alisher on 23.02.2023.
 //
 
@@ -51,8 +49,7 @@ class JSONListAdapter {
         self.selectedChanged()
     }
     
-    
-    func showSimpleActionSheet(vc:UIViewController, title: String? = nil, itemTitleKey: [JSONSubscriptType], itemDescKey: [JSONSubscriptType]? = nil, imageOrURLimageKey: [JSONSubscriptType]? = nil) {
+    func showSimpleActionSheet(vc:UIViewController, title: String? = nil, itemTitleKey: [JSONSubscriptType], itemDescKey: [JSONSubscriptType]? = nil) {
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         for item in self.items {
             alert.addAction(UIAlertAction(title: item[itemTitleKey].stringValue, style: .default, handler: { action in
@@ -64,7 +61,6 @@ class JSONListAdapter {
         vc.present(alert, animated: true)
         
     }
-
 }
 
 //let json = JSON(parseJSON: #"[{"id":1,"title":"Title1"},{"id":2,"title":"Title2"},{"id":3,"title":"Title3"}]"#)
@@ -119,7 +115,7 @@ class JSONListAdapter {
 
 
 
-
+// ------------------------------------------------------------------------------------
 class UniversalListAdapter<Element> {
     var overideGetItemID: ((Element)->String?) = {el in return nil}
     var selectedChanged: (()->()) = {}
@@ -168,30 +164,7 @@ class UniversalListAdapter<Element> {
         self.selectedChanged()
     }
 }
-
-class AlertListSheetVC<Element> {
-    let adapter:UniversalListAdapter<Element>
-    var overideGetTitle: ((Element)->String)
-    var title:String?
-    
-    init(title:String? = nil, adapter:UniversalListAdapter<Element>,overideGetTitle: @escaping ((Element)->String) = {el in return "NotSetTitle"}) {
-        self.adapter = adapter
-        self.overideGetTitle = overideGetTitle
-        self.title = title
-    }
-    func showForSelect(vc:UIViewController){
-        let alert = UIAlertController(title: self.title, message: nil, preferredStyle: .actionSheet)
-        for item in adapter.items {
-            alert.addAction(UIAlertAction(title: overideGetTitle(item), style: .default,handler: { action in
-                self.adapter.selected = item
-                self.adapter.selectedChanged()
-            }))
-        }
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-        vc.present(alert, animated: true)
-    }
-}
-
+//---------------------------------------------------------------------------------------
 
 //var arr:[[String:String]] = []
 //for i in 0..<5 {
@@ -218,3 +191,48 @@ class AlertListSheetVC<Element> {
 //}
 //s.showForSelect(vc: self)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------------------------------------------------------------
+class AlertListSheetVC<Element> {
+    let adapter:UniversalListAdapter<Element>
+    var overideGetTitle: ((Element)->String)
+    var title:String?
+    
+    init(title:String? = nil, adapter:UniversalListAdapter<Element>,overideGetTitle: @escaping ((Element)->String) = {el in return "NotSetTitle"}) {
+        self.adapter = adapter
+        self.overideGetTitle = overideGetTitle
+        self.title = title
+    }
+    func showForSelect(vc:UIViewController){
+        let alert = UIAlertController(title: self.title, message: nil, preferredStyle: .actionSheet)
+        for item in adapter.items {
+            alert.addAction(UIAlertAction(title: overideGetTitle(item), style: .default,handler: { action in
+                self.adapter.selected = item
+                self.adapter.selectedChanged()
+            }))
+        }
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        vc.present(alert, animated: true)
+    }
+}
+
+extension UniversalListAdapter {
+    func showSimpleActionSheet(vc: UIViewController,title:String? = nil, overideGetTitle: @escaping ((Element)->String) = {el in return "NotSetTitle"}){
+        let s = AlertListSheetVC(title: "Выбрать",adapter: self,overideGetTitle: overideGetTitle)
+        s.showForSelect(vc: vc)
+    }
+}
+// ---------------------------------------------------------------------------------------
