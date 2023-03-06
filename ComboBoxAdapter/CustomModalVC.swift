@@ -1,8 +1,6 @@
 //
 //  CustomModalVC.swift
 //
-//  Created by Khurshed Umarov on 24.02.2023.
-//
 
 import UIKit
 import SwiftyJSON
