@@ -49,6 +49,13 @@ class JSONListAdapter {
         self.selectedChanged()
     }
     
+    func generateSimpleID(){
+        for i in 0..<self.items.count {
+            items[i]["#id"] = JSON(i)
+        }
+        self.idKey = ["#id"]
+    }
+    
     func showSimpleActionSheet(vc:UIViewController, title: String? = nil, itemTitleKey: [JSONSubscriptType], itemDescKey: [JSONSubscriptType]? = nil) {
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         for item in self.items {
